@@ -1,6 +1,7 @@
 import imageOne from './assets/img1.jpg'
 
 
+
 // Define the type for the ad objects
 export interface Ad {
     id: number;

@@ -18,6 +18,7 @@ import { NextRequest } from "next/server";
 //   };
 // }
 
+// test
 
 // 🌳🌳🌳  Initialization Starts Here -----------------------------------------------------------------------
 
@@ -37,7 +38,7 @@ const genAI = new GoogleGenerativeAI(apiKey);
 // 🌳🌳🌳 Setting function for AI model here here -----------------------------------------------------------------------
 
 // this actually would be the duffel function for finding the flights
-export async function setLightValues(brightness: any, colorTemp: any) {
+async function setLightValues(brightness: any, colorTemp: any) {
   // This mock API returns the requested lighting values
   return {
     brightness: brightness,
