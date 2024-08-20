@@ -5,6 +5,7 @@ import { motion, AnimatePresence } from 'framer-motion'
 import { X } from "lucide-react"
 import { useAirLink } from '../airlinkContext';
 import { useEffect, useRef, useState } from "react";
+import { ads } from '../ads'
 
 export default function ChatClient() {
 
@@ -62,9 +63,14 @@ export default function ChatClient() {
     };
 
     // 🪦🪦🪦 textarea controller stuff ends here -----------------------------------------------------------------------
-
-
-
+    
+    
+    
+    // 🌳🌳🌳 Starting the data fetching functions --------------------------------------------------------------------------------------
+    
+    
+    
+    // 🪦🪦🪦 data fetching functions ends here -----------------------------------------------------------------------
     return (
     <>
 
@@ -90,13 +96,14 @@ export default function ChatClient() {
                                 animate={{ opacity: 1 }}
                                 transition={{ duration: 2 }}
                                 className="w-full h-[100px] rounded-xl flex place-items-center place-content-center bg-gray-500 bg-opacity-20 absolute top-0">
-                                    {/* <p className="text-center">Ad will go here $$</p> */}
-                                    <a className="absolute text-xs top-2 right-2 cursor-pointer"><X size={20} /></a>
-                                    <a href="bid" className="absolute select-none text-[12px] text-muted-foreground bottom-2 right-2 cursor-pointer">Want your ad here?</a>
+                                    <img src={ads[0].image} alt={ads[0].alt} className="w-full h-full object-cover" />
+                                    <a className="absolute text-xs top-2 right-2 cursor-pointer bg-neutral-800 rounded-full p-1 hover:bg-neutral-700 hover:scale-105"><X size={20} /></a>
+                                    <a href="bid" className="absolute select-none text-[12px] text-muted-foreground bottom-[-20%] hover:text-white right-2 cursor-pointer">Want your ad here?</a>
                                 </motion.div>
 
 
-                                <motion.div className="w-full place-content-center flex select-none h-max absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
+                                <motion.div 
+                                className="w-full place-content-center flex select-none h-max absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
                                     <p>Welcome to Airlink!</p>
                                 </motion.div>
 
@@ -125,7 +132,7 @@ export default function ChatClient() {
                                 <motion.textarea           
                                     initial={{ opacity: 0, y: 100 }}
                                     animate={{ opacity: 1, y: 0 }}
-                                    transition={{ duration: 1.2 }}
+                                    transition={{ duration: 2.2 }}
                                     placeholder="Message" 
                                     onChange={handleTextareaChange}
                                     ref={textAreaRef}
@@ -133,13 +140,18 @@ export default function ChatClient() {
                                     value={value}
                                     className="w-full text-[12px] no-scrollbar p-2 px-6 rounded-xl bg-neutral-900 outline outline-neutral-800"/>
                                 </form>
-                                <motion.p 
-                                initial={{ opacity: 0}}
-                                animate={{ opacity: 1 }}
-                                transition={{ duration: 2 }}
-                                className="text-center absolute bottom-5 text-[10px] text-muted-foreground">
-                                    Travel made easy.
-                                </motion.p>
+                                <div className="w-full absolute bottom-5  h-max place-items-center place-content-center">
+                                    <motion.p 
+                                    initial={{ opacity: 0}}
+                                    animate={{ opacity: 1 }}
+                                    transition={{ duration: 2 }}
+                                    className="text-center text-[10px] text-muted-foreground">
+                                        Travel made easy.
+                                    </motion.p>
+
+                                    
+
+                                </div>
                             </div>
                     
                         </div>  
@@ -156,13 +168,20 @@ export default function ChatClient() {
                         <motion.div
                             className="flex gap-3 px-5 py-8 flex-col w-full h-full">
                                 
-                                <div className="w-full cursor-pointer hover:scale-[102%] h-max bg-gray-500 bg-opacity-20 p-3 rounded-md">
-                                    <p>My Flights</p>
+                                <div className="py-8 px-8 text-xl absolute top-0 left-0"><span className='select-none'>Airlink</span></div>
+
+                                <div className="w-full my-8 h-max flex flex-col gap-3">
+
+                                    <div className="w-full cursor-pointer hover:scale-[102%] hover:bg-neutral-700  h-max bg-neutral-800  p-3 rounded-md">
+                                        <p>My Flights</p>
+                                    </div>
+                                
+                                    <div className="w-full cursor-pointer hover:scale-[102%] hover:bg-neutral-700  h-max bg-neutral-800  p-3 rounded-md">
+                                        <p>My Profile</p>
+                                    </div>
+
                                 </div>
-                            
-                                <div className="w-full cursor-pointer hover:scale-[102%] h-max bg-gray-500 bg-opacity-20 p-3 rounded-md">
-                                    <p>My Profile</p>
-                                </div>
+
                             </motion.div>
                         </motion.div>
                     </AnimatePresence>
