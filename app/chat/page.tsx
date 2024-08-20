@@ -2,10 +2,13 @@
 
 import Header from "../airlink-comp/header"
 import { motion, AnimatePresence } from 'framer-motion'
-import { Inbox, SendHorizonal, X } from "lucide-react"
+import { Circle, Inbox, SendHorizonal, X } from "lucide-react"
 import { useAirLink } from '../airlinkContext';
 import { useEffect, useRef, useState } from "react";
 import { ads } from '../ads'
+import { callGemini } from "../gemini";
+import { useFormState, useFormStatus } from "react-dom";
+import { useToast } from "@/components/ui/use-toast";
 
 export default function ChatClient() {
 
@@ -13,12 +16,14 @@ export default function ChatClient() {
 
     // initial consts
     const { isMenuOpen, setIsMenuOpen } = useAirLink()
+    const { toast } = useToast()
+    const [userInput, setUserInput] = useState("")
     
-    // 🪦🪦🪦 initial consts ends here -----------------------------------------------------------------------
+    // 🪦🪦🪦 initial consts ends here -------------------------------------------------------------------------------
 
 
 
-    // 🌳🌳🌳 Starting the animations --------------------------------------------------------------------------------------
+    // 🌳🌳🌳 Starting the animations --------------------------------------------------------------------------------
 
     // animations
     const variants = {
@@ -26,11 +31,11 @@ export default function ChatClient() {
         closed: { opacity: 0, x: "-100%" },
     }
 
-    // 🪦🪦🪦 animations ends here -----------------------------------------------------------------------
+    // 🪦🪦🪦 animations ends here ------------------------------------------------------------------------------------
 
 
 
-    // 🌳🌳🌳 Starting the textarea controller stuff --------------------------------------------------------------------------------------
+    // 🌳🌳🌳 Starting the textarea controller stuff -------------------------------------------------------------------
 
     // textarea controller stuff
     // Updates the height of a <textarea> when the value changes.
@@ -62,15 +67,54 @@ export default function ChatClient() {
       setValue(val);
     };
 
+    
+
     // 🪦🪦🪦 textarea controller stuff ends here -----------------------------------------------------------------------
     
+
+    const handleBookingFlights = async () => {
+        await callGemini(userInput);
+    }
     
     
-    // 🌳🌳🌳 Starting the data fetching functions --------------------------------------------------------------------------------------
+    // 🌳🌳🌳 Starting the data fetching functions -----------------------------------------------------------------------
+    // const SubmitButton = () => {
     
+    //     const status = useFormStatus()
     
+    //     if (status.pending !== true) {
+    //         return (
+    //             <button className="-rotate-90 p-2 hover:scale-105 text-muted-foreground bg-neutral-800 hover:bg-neutral-700 hover:text-white rounded-full"><SendHorizonal size={20}/></button>
+    //         )
+    //     }
     
-    // 🪦🪦🪦 data fetching functions ends here -----------------------------------------------------------------------
+    //     if (status.pending === true) {
+    //         return (
+    //         <>
+    //             <button className="-rotate-90 p-2 hover:scale-105 text-muted-foreground bg-neutral-800 hover:bg-neutral-700 hover:text-white rounded-full"><Circle size={20}/></button>
+    //         </>
+    //         )
+    //     }
+    
+    // }
+    
+    // type FormState = {
+    //     message: string;
+    // };
+    
+    // const formAction = async (prevState: FormState, formData: FormData): Promise<FormState> => {
+    //     // await in this sense means it will wait until the promise is resolved before continuing to the next line
+    //     await callGemini(formData, formState);
+    //     console.log('gemini has been called');
+    //     toast({ title: '✅ Success', description: 'Airlink has been submitted', itemID: 'success' });
+    //     return { message: 'Submission successful!' };
+    // };
+    
+    // const [formState, action] = useFormState(formAction, {
+    //     message: '',
+    // });
+    
+    // 🪦🪦🪦 data fetching functions ends here --------------------------------------------------------------------------
     return (
     <>
 
@@ -136,27 +180,34 @@ export default function ChatClient() {
                                     initial={{ opacity: 0, y: 100 }}
                                     animate={{ opacity: 1, y: 0 }}
                                     transition={{ duration: 2.2 }}
-                                    className="w-full flex place-items-center place-content-center h-max gap-8 absolute bottom-[40%]" action="">
+                                    // action={action}
+                                    className="w-full px-4 md:px-0 flex place-items-center place-content-center h-max gap-8 absolute bottom-[40%]">
                                 <motion.textarea           
-                                    placeholder="Message" 
+                                    placeholder="Where would you like to fly?" 
                                     onChange={handleTextareaChange}
                                     ref={textAreaRef}
                                     rows={1}
                                     value={value}
-                                    className="w-full text-[12px] no-scrollbar p-2 px-6 rounded-xl bg-neutral-900 outline outline-neutral-800"/>
-                                    <button className="-rotate-90 p-2 hover:scale-105 text-muted-foreground bg-neutral-800 hover:bg-neutral-700 hover:text-white rounded-full"><SendHorizonal size={20}/></button>
+                                    className="w-full text-[12px] no-scrollbar p-2 px-6 rounded-xl bg-neutral-900 outline outline-neutral-800"/>                                    
+                                    {/* you have to make buttons a component to track the status of the form */}
+                                    {/* <button className="-rotate-90 p-2 hover:scale-105 text-muted-foreground bg-neutral-800 hover:bg-neutral-700 hover:text-white rounded-full"><SendHorizonal size={20}/></button> */}
+                                    <span onClick={() => callGemini('')} className="-rotate-90 p-2 hover:scale-105 text-muted-foreground bg-neutral-800 hover:bg-neutral-700 hover:text-white rounded-full"><SendHorizonal size={20}/></span>
+                                    {/* <SubmitButton/> */}
+                                
                                 </motion.form>
+                               
                                 <motion.div 
                                  initial={{ opacity: 0}}
                                  animate={{ opacity: 1 }}
                                  transition={{ duration: 9 }}
-                                 className="w-full flex gap-2 absolute bottom-5  h-max place-items-center place-content-center">
+                                 className="w-full flex gap-2 absolute bottom-2  h-max place-items-center place-content-center">
                                     <p 
-                                    className="text-center text-[10px] text-muted-foreground">
+                                    className="text-center select-none text-[10px] text-muted-foreground">
                                         Travel made easy.
                                     </p>
                                     <Inbox className="cursor-pointer hover:scale-105 text-muted-foreground" size={20} />
                                 </motion.div>
+                           
                             </div>
                     
                         </div>  

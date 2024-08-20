@@ -87,8 +87,11 @@ const generativeModel = genAI.getGenerativeModel({
 
 const chat = generativeModel.startChat();
 const prompt = "Dim the lights so the room feels cozy and warm.";
+type FormState = {
+  message: string;
+};
 
-export async function run() {
+export async function callGemini(text: string) {
     // Send the message to the model.
     const result = await chat.sendMessage(prompt);
   
