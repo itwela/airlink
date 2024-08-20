@@ -49,7 +49,7 @@ export default function ChatClient() {
                                 {/* ad block */}
                                 {/* I could even make this a moving component at one point so I can show different ads */}
                                 <div className="w-full h-[100px] flex place-items-center place-content-center bg-gray-500 bg-opacity-20 absolute top-0">
-                                    <p className="text-center">Ad will go here $$</p>
+                                    {/* <p className="text-center">Ad will go here $$</p> */}
                                     <a className="absolute text-xs top-2 right-2 cursor-pointer"><X size={20} /></a>
                                     <a href="bid" className="absolute text-xs text-muted-foreground bottom-2 right-2 cursor-pointer">Want your ad here?</a>
                                 </div>
@@ -73,7 +73,7 @@ export default function ChatClient() {
                             initial={{ opacity: 0, y: 100 }}
                             animate={{ opacity: 1, y: 0 }}
                             transition={{ duration: 1.2 }}
-                            className="w-full  md:w-[50%] h-[10%] p-4 flex flex-col gap-2 place-items-center place-content-center">
+                            className="w-full  md:w-[50%] h-[20%] p-4 flex flex-col gap-4 place-items-center place-content-center">
                             <form className="w-full" action="">
                                     <input type="text" 
                                     placeholder="Message" 
