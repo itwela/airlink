@@ -2,7 +2,7 @@
 
 import Header from "../airlink-comp/header"
 import { motion, AnimatePresence } from 'framer-motion'
-import { X } from "lucide-react"
+import { Inbox, SendHorizonal, X } from "lucide-react"
 import { useAirLink } from '../airlinkContext';
 import { useEffect, useRef, useState } from "react";
 import { ads } from '../ads'
@@ -94,7 +94,7 @@ export default function ChatClient() {
                                 <motion.div
                                 initial={{ opacity: 0 }}
                                 animate={{ opacity: 1 }}
-                                transition={{ duration: 2 }}
+                                transition={{ duration: 8 }}
                                 className="w-full h-[100px] rounded-xl flex place-items-center place-content-center bg-gray-500 bg-opacity-20 absolute top-0">
                                     <img src={ads[0].image} alt={ads[0].alt} className="w-full h-full object-cover" />
                                     <a className="absolute text-xs top-2 right-2 cursor-pointer bg-neutral-800 rounded-full p-1 hover:bg-neutral-700 hover:scale-105"><X size={20} /></a>
@@ -110,17 +110,21 @@ export default function ChatClient() {
                                 
                                 {/* the actual chat */}
                                 <motion.div 
-                                initial={{ opacity: 0 }}
-                                animate={{ opacity: 1 }}
-                                transition={{ duration: 2 }}
-                                className="outline rounded-xl flex place-items-end p-5 place-content-center outline-neutral-800 w-full h-full ">
+                                // initial={{ opacity: 0 }}
+                                // animate={{ opacity: 1 }}
+                                // transition={{ duration: 2 }}
+                                className=" rounded-xl flex place-items-end p-5 place-content-center outline-neutral-800 w-full h-full ">
                                     
                                     {/* chat bubble */}
-                                    <div className="text-[12px] w-full h-max flex flex-col gap-3">
+                                    <motion.div 
+                                    initial={{ opacity: 0, y: 100 }}
+                                    animate={{ opacity: 1, y: 0 }}
+                                    transition={{ duration: 4 }}
+                                    className="text-[12px] w-full h-max flex flex-col gap-3">
                                         <div className="p-2 px-4 h-max cursor-pointer outline outline-1 outline-white rounded-lg bg-gray-500 bg-opacity-20">
                                             The dynamic flight data will be here. Some basic Information, and a direct link to book.
                                         </div>                                    
-                                    </div>  
+                                    </motion.div>  
 
                                 </motion.div>
                                 
@@ -128,30 +132,31 @@ export default function ChatClient() {
 
                             {/* input and small text container */}
                             <div className="w-full md:w-[50%] relative h-[20%] flex flex-col-reverse gap-4 place-items-center place-content-center">
-                                <form className="w-full absolute bottom-[40%]" action="">
-                                <motion.textarea           
+                                <motion.form 
                                     initial={{ opacity: 0, y: 100 }}
                                     animate={{ opacity: 1, y: 0 }}
                                     transition={{ duration: 2.2 }}
+                                    className="w-full flex place-items-center place-content-center h-max gap-8 absolute bottom-[40%]" action="">
+                                <motion.textarea           
                                     placeholder="Message" 
                                     onChange={handleTextareaChange}
                                     ref={textAreaRef}
                                     rows={1}
                                     value={value}
                                     className="w-full text-[12px] no-scrollbar p-2 px-6 rounded-xl bg-neutral-900 outline outline-neutral-800"/>
-                                </form>
-                                <div className="w-full absolute bottom-5  h-max place-items-center place-content-center">
-                                    <motion.p 
-                                    initial={{ opacity: 0}}
-                                    animate={{ opacity: 1 }}
-                                    transition={{ duration: 2 }}
+                                    <button className="-rotate-90 p-2 hover:scale-105 text-muted-foreground bg-neutral-800 hover:bg-neutral-700 hover:text-white rounded-full"><SendHorizonal size={20}/></button>
+                                </motion.form>
+                                <motion.div 
+                                 initial={{ opacity: 0}}
+                                 animate={{ opacity: 1 }}
+                                 transition={{ duration: 9 }}
+                                 className="w-full flex gap-2 absolute bottom-5  h-max place-items-center place-content-center">
+                                    <p 
                                     className="text-center text-[10px] text-muted-foreground">
                                         Travel made easy.
-                                    </motion.p>
-
-                                    
-
-                                </div>
+                                    </p>
+                                    <Inbox className="cursor-pointer hover:scale-105 text-muted-foreground" size={20} />
+                                </motion.div>
                             </div>
                     
                         </div>  
