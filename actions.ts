@@ -16,7 +16,10 @@ import { GoogleGenerativeAI, FunctionDeclaration, SchemaType } from "@google/gen
 //   };
 // }
 
-const apiKey = process.env.API_KEY || "not found"; 
+
+// 🌳🌳🌳  Initialization Starts Here -----------------------------------------------------------------------
+
+const apiKey = process.env.GEMINI_API_KEY || "not found"; 
 // if api key is not found ❌
 if (apiKey == "not found") {
     console.log("API key not found");
@@ -25,8 +28,11 @@ if (apiKey == "not found") {
 // if api key is found ✅
 const genAI = new GoogleGenerativeAI(apiKey);
 
+// 🪦🪦🪦 Initialization Ends Here -----------------------------------------------------------------------
 
-// Setting function for AI model here here -----------------------------------------------------------------------
+
+
+// 🌳🌳🌳 Setting function for AI model here here -----------------------------------------------------------------------
 
 export async function setLightValues(brightness: any, colorTemp: any) {
   // This mock API returns the requested lighting values
@@ -73,9 +79,11 @@ const generativeModel = genAI.getGenerativeModel({
     }]
 });
 
-// 🪦 Setting function stuff here -----------------------------------------------------------------------
+// 🪦🪦🪦 Function Setting Ends Here -----------------------------------------------------------------------
 
 
+
+// 🌳🌳🌳 Starting the chat --------------------------------------------------------------------------------------
 
 const chat = generativeModel.startChat();
 const prompt = "Dim the lights so the room feels cozy and warm.";
@@ -105,4 +113,4 @@ export async function run() {
     }
 }
 
-// 🪦 Setting function stuff here -----------------------------------------------------------------------
+// 🪦🪦🪦 Chat ends here -----------------------------------------------------------------------

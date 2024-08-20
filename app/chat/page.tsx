@@ -4,14 +4,66 @@ import Header from "../airlink-comp/header"
 import { motion, AnimatePresence } from 'framer-motion'
 import { X } from "lucide-react"
 import { useAirLink } from '../airlinkContext';
+import { useEffect, useRef, useState } from "react";
 
 export default function ChatClient() {
 
+    // 🌳🌳🌳 Starting the initial consts --------------------------------------------------------------------------------------
+
+    // initial consts
     const { isMenuOpen, setIsMenuOpen } = useAirLink()
+    
+    // 🪦🪦🪦 initial consts ends here -----------------------------------------------------------------------
+
+
+
+    // 🌳🌳🌳 Starting the animations --------------------------------------------------------------------------------------
+
+    // animations
     const variants = {
         open: { opacity: 1, x: 0 },
         closed: { opacity: 0, x: "-100%" },
     }
+
+    // 🪦🪦🪦 animations ends here -----------------------------------------------------------------------
+
+
+
+    // 🌳🌳🌳 Starting the textarea controller stuff --------------------------------------------------------------------------------------
+
+    // textarea controller stuff
+    // Updates the height of a <textarea> when the value changes.
+    const useAutosizeTextArea = (
+        textAreaRef: HTMLTextAreaElement | null,
+        value: string
+    ) => {
+        useEffect(() => {
+        if (textAreaRef) {
+            // We need to reset the height momentarily to get the correct scrollHeight for the textarea
+            textAreaRef.style.height = "0px";
+            const scrollHeight = textAreaRef.scrollHeight;
+    
+            // We then set the height directly, outside of the render loop
+            // Trying to set this with state or a ref will product an incorrect value.
+            textAreaRef.style.height = scrollHeight + "px";
+        }
+        }, [textAreaRef, value]);
+    };
+
+    const [value, setValue] = useState("");
+    const textAreaRef = useRef<HTMLTextAreaElement>(null);
+  
+    useAutosizeTextArea(textAreaRef.current, value);
+  
+    const handleTextareaChange = (evt: React.ChangeEvent<HTMLTextAreaElement>) => {
+      const val = evt.target?.value;
+  
+      setValue(val);
+    };
+
+    // 🪦🪦🪦 textarea controller stuff ends here -----------------------------------------------------------------------
+
+
 
     return (
     <>
@@ -24,67 +76,97 @@ export default function ChatClient() {
 
                 <section className="bg-neutral-900 text-white flex w-full h-[90%] flex-col place-items-center">
                     
-                    <div className="w-full h-full flex relative  place-items-center place-content-center">
+                    <div className="max-w-[900px] rounded-xl  w-full h-full flex relative  place-items-center place-content-center">
                     
+                        <div className="w-full h-full flex flex-col place-items-center place-content-center">
+                            
+                            {/* chat and add container */}
+                            <div className="w-full relative h-full flex flex-col place-items-center place-content-center">
+                                
+                                {/* ad block */}
+                                {/* I could even make this a moving component at one point so I can show different ads */}
+                                <motion.div
+                                initial={{ opacity: 0 }}
+                                animate={{ opacity: 1 }}
+                                transition={{ duration: 2 }}
+                                className="w-full h-[100px] rounded-xl flex place-items-center place-content-center bg-gray-500 bg-opacity-20 absolute top-0">
+                                    {/* <p className="text-center">Ad will go here $$</p> */}
+                                    <a className="absolute text-xs top-2 right-2 cursor-pointer"><X size={20} /></a>
+                                    <a href="bid" className="absolute select-none text-[12px] text-muted-foreground bottom-2 right-2 cursor-pointer">Want your ad here?</a>
+                                </motion.div>
+
+
+                                <motion.div className="w-full place-content-center flex select-none h-max absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
+                                    <p>Welcome to Airlink!</p>
+                                </motion.div>
+
+                                
+                                {/* the actual chat */}
+                                <motion.div 
+                                initial={{ opacity: 0 }}
+                                animate={{ opacity: 1 }}
+                                transition={{ duration: 2 }}
+                                className="outline rounded-xl flex place-items-end p-5 place-content-center outline-neutral-800 w-full h-full ">
+                                    
+                                    {/* chat bubble */}
+                                    <div className="text-[12px] w-full h-max flex flex-col gap-3">
+                                        <div className="p-2 px-4 h-max cursor-pointer outline outline-1 outline-white rounded-lg bg-gray-500 bg-opacity-20">
+                                            The dynamic flight data will be here. Some basic Information, and a direct link to book.
+                                        </div>                                    
+                                    </div>  
+
+                                </motion.div>
+                                
+                            </div>
+
+                            {/* input and small text container */}
+                            <div className="w-full md:w-[50%] relative h-[20%] flex flex-col-reverse gap-4 place-items-center place-content-center">
+                                <form className="w-full absolute bottom-[40%]" action="">
+                                <motion.textarea           
+                                    initial={{ opacity: 0, y: 100 }}
+                                    animate={{ opacity: 1, y: 0 }}
+                                    transition={{ duration: 1.2 }}
+                                    placeholder="Message" 
+                                    onChange={handleTextareaChange}
+                                    ref={textAreaRef}
+                                    rows={1}
+                                    value={value}
+                                    className="w-full text-[12px] no-scrollbar p-2 px-6 rounded-xl bg-neutral-900 outline outline-neutral-800"/>
+                                </form>
+                                <motion.p 
+                                initial={{ opacity: 0}}
+                                animate={{ opacity: 1 }}
+                                transition={{ duration: 2 }}
+                                className="text-center absolute bottom-5 text-[10px] text-muted-foreground">
+                                    Travel made easy.
+                                </motion.p>
+                            </div>
+                    
+                        </div>  
+
+                    </div>
+
+                    {/* menu */}
                     <AnimatePresence  mode="wait">
                         <motion.div 
                         initial="closed"
                         animate={isMenuOpen ? "open" : "closed"}
                         variants={variants}
-                        className="w-[50%] absolute z-10 left-0 bg-neutral-900 top-0 md:w-[20%] h-full">
+                        className="w-[75%] py-8 text-[12px] absolute z-10 left-0 bg-neutral-900 bottom-0 sm:w-[50%] md:w-[20%] h-full">
                         <motion.div
-                            className="flex px-5 py-3 flex-col w-full h-full">
-                                <div className="w-full h-max bg-gray-500 bg-opacity-20 p-3 rounded-md">
+                            className="flex gap-3 px-5 py-8 flex-col w-full h-full">
+                                
+                                <div className="w-full cursor-pointer hover:scale-[102%] h-max bg-gray-500 bg-opacity-20 p-3 rounded-md">
                                     <p>My Flights</p>
+                                </div>
+                            
+                                <div className="w-full cursor-pointer hover:scale-[102%] h-max bg-gray-500 bg-opacity-20 p-3 rounded-md">
+                                    <p>My Profile</p>
                                 </div>
                             </motion.div>
                         </motion.div>
                     </AnimatePresence>
 
-
-                        <div className="w-full h-full flex flex-col place-items-center place-content-center">
-                            
-                            <div className="w-full relative h-full flex flex-col place-items-center place-content-center">
-                                
-                                {/* ad block */}
-                                {/* I could even make this a moving component at one point so I can show different ads */}
-                                <div className="w-full h-[100px] flex place-items-center place-content-center bg-gray-500 bg-opacity-20 absolute top-0">
-                                    {/* <p className="text-center">Ad will go here $$</p> */}
-                                    <a className="absolute text-xs top-2 right-2 cursor-pointer"><X size={20} /></a>
-                                    <a href="bid" className="absolute text-xs text-muted-foreground bottom-2 right-2 cursor-pointer">Want your ad here?</a>
-                                </div>
-                                
-                                <motion.div 
-                                initial={{ opacity: 0, y: 100 }}
-                                animate={{ opacity: 1, y: 0 }}
-                                transition={{ duration: 1 }}
-                                className="outline flex place-items-end p-5 place-content-center outline-neutral-800 w-full h-full ">
-                                    
-                                    <div className="w-full h-max flex flex-col gap-3">
-                                        <div className="p-2 px-4 h-max cursor-pointer outline outline-1 outline-white rounded-lg bg-gray-500 bg-opacity-20">
-                                            The dynamic flight data will be here. Some basic Information, and a direct link to book.
-                                        </div>                                    
-                                    </div>     
-                                </motion.div>
-                                
-                            </div>
-
-                            <motion.div 
-                            initial={{ opacity: 0, y: 100 }}
-                            animate={{ opacity: 1, y: 0 }}
-                            transition={{ duration: 1.2 }}
-                            className="w-full  md:w-[50%] h-[20%] p-4 flex flex-col gap-4 place-items-center place-content-center">
-                            <form className="w-full" action="">
-                                    <input type="text" 
-                                    placeholder="Message" 
-                                    className="w-full h-max p-2 px-6 rounded-full bg-neutral-900 outline outline-neutral-800"/>
-                            </form>
-                            <p className="text-center text-[10px] text-muted-foreground">Travel made easy.</p>
-                            </motion.div>
-                    
-                        </div>
-
-                    </div>
 
                 </section>
             </main>
