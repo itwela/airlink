@@ -229,6 +229,10 @@ export default function ChatClient() {
                                 <div className="w-full my-8 h-max flex flex-col gap-3">
 
                                     <div className="w-full cursor-pointer hover:scale-[102%] hover:bg-neutral-700  h-max bg-neutral-800  p-3 rounded-md">
+                                        <p>My Trips</p>
+                                    </div>
+
+                                    <div className="w-full cursor-pointer hover:scale-[102%] hover:bg-neutral-700  h-max bg-neutral-800  p-3 rounded-md">
                                         <p>My Flights</p>
                                     </div>
                                 

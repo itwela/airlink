@@ -1,6 +1,7 @@
 'use server'
 
 import { GoogleGenerativeAI, FunctionDeclaration, SchemaType } from "@google/generative-ai";
+import { NextRequest } from "next/server";
 
 // async function template
 
@@ -35,6 +36,7 @@ const genAI = new GoogleGenerativeAI(apiKey);
 
 // 🌳🌳🌳 Setting function for AI model here here -----------------------------------------------------------------------
 
+// this actually would be the duffel function for finding the flights
 export async function setLightValues(brightness: any, colorTemp: any) {
   // This mock API returns the requested lighting values
   return {
@@ -86,13 +88,15 @@ const generativeModel = genAI.getGenerativeModel({
 
 // 🌳🌳🌳 Starting the chat --------------------------------------------------------------------------------------
 
-const chat = generativeModel.startChat();
-const prompt = "Dim the lights so the room feels cozy and warm.";
 type FormState = {
-  message: string;
+    message: string;
 };
 
-export async function callGemini(text: string) {
+export async function POST(req: NextRequest) {
+
+    const chat = generativeModel.startChat();
+    const therequest = await req.json();
+    const prompt = "Dim the lights so the room feels cozy and warm.";
     // Send the message to the model.
     const result = await chat.sendMessage(prompt);
   
