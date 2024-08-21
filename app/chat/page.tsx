@@ -151,6 +151,57 @@ export default function ChatClient() {
     // });
     
     // 🪦🪦🪦 data fetching functions ends here --------------------------------------------------------------------------
+    
+    
+    const offersData = [
+        {
+          total_emissions_kg: '921',
+          allowed_passenger_identity_document_types: [
+            'passport',
+            'tax_id',
+            'known_traveler_number',
+            'passenger_redress_number'
+          ],
+          accepted_loyalty_programmes: [
+            'AA', 'CX', 'MH',
+            'BA', 'AY', 'UL',
+            'QF', 'IB', 'JM',
+            'AS', 'QR', 'UM',
+            'RJ', 'AT'
+          ],
+          payment_requirements: {
+            price_guarantee_expires_at: '2024-08-23T05:14:02Z',
+            payment_required_by: '2024-08-24T05:14:02Z',
+            requires_instant_payment: false       
+          },
+          supported_passenger_identity_document_types: [ 'passport', 'known_traveler_number', 'passenger_redress_number' ],
+          passenger_identity_documents_required: false,
+          tax_currency: 'USD',
+          base_currency: 'USD',
+          base_amount: '1512.29',
+          private_fares: [],
+          tax_amount: '272.21',
+          total_currency: 'USD',
+          created_at: '2024-08-21T05:14:02.131344Z',
+          live_mode: false,
+          total_amount: '1784.50',
+          slices: [ {} ],
+          passengers: [ {}, {}, {} ],
+          expires_at: '2024-08-21T05:44:02.130481Z',
+          partial: false,
+          owner: {
+            logo_symbol_url: 'https://assets.duffel.com/img/airlines/for-light-background/full-color-logo/AA.svg',
+            logo_lockup_url: 'https://assets.duffel.com/img/airlines/for-light-background/full-color-lockup/AA.svg',
+            conditions_of_carriage_url: 'https://www.aa.com/i18n/customer-service/support/conditions-of-carriage.jsp',
+            iata_code: 'AA',
+            name: 'American Airlines',
+            id: 'arl_00009VME7DAGiJjwomhv32'
+          },
+          id: 'off_0000AlBJh41tbVoS8jj0dg'
+        }
+      ];
+    
+
     return (
     <>
 
@@ -213,8 +264,14 @@ export default function ChatClient() {
                                     animate={{ opacity: 1, y: 0 }}
                                     transition={{ duration: 4 }}
                                     className="text-[12px] w-full h-max flex flex-col gap-3">
-                                        <div className="p-2 px-4 h-max cursor-pointer outline outline-1 outline-white rounded-lg bg-gray-500 bg-opacity-20">
-                                            The dynamic flight data will be here. Some basic Information, and a direct link to book.
+                                        <div className="p-2 flex flex-col gap-2 px-4 h-max cursor-pointer outline outline-1 outline-white rounded-lg bg-gray-500 bg-opacity-20">
+                                            <p className="text-xl">{offersData[0].owner.name}</p>
+
+                                            <div className="w-full flex place-content-end">
+                                                {/* <p>{offersData[0].base_amount}</p> */}
+                                                {/* <p>{offersData[0].tax_amount}</p> */}
+                                                <p className="">{offersData[0].total_amount}</p>
+                                            </div>
                                         </div>                                    
                                     </motion.div>  
 
