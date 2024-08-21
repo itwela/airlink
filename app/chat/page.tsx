@@ -9,6 +9,7 @@ import { ads } from '../ads'
 import { callGemini } from "../gemini";
 import { useFormState, useFormStatus } from "react-dom";
 import { useToast } from "@/components/ui/use-toast";
+import { offerRequest } from "../actions";
 
 export default function ChatClient() {
 
@@ -18,6 +19,11 @@ export default function ChatClient() {
     const { isMenuOpen, setIsMenuOpen } = useAirLink()
     const { toast } = useToast()
     const [userInput, setUserInput] = useState("")
+    const [goodName, setGoodName] = useState(false)
+    const [goodEmail, setGoodEmail] = useState(false)
+    const [goodOrigin, setGoodOrigin] = useState(false)
+    const [goodDestination, setGoodDestination] = useState(false)
+    const [readyToSubmit, setReadyToSubmit] = useState(true)
     
     // 🪦🪦🪦 initial consts ends here -------------------------------------------------------------------------------
 
@@ -63,8 +69,38 @@ export default function ChatClient() {
   
     const handleTextareaChange = (evt: React.ChangeEvent<HTMLTextAreaElement>) => {
       const val = evt.target?.value;
-  
       setValue(val);
+
+      if (val.length > 5) {
+        setGoodName(true);
+      } else {
+        setGoodName(false);
+      }
+    
+      if (val.length > 7) {
+        setGoodEmail(true);
+      } else {
+        setGoodEmail(false);
+      }
+
+      if (val.length > 9) {
+        setGoodOrigin(true);
+      } else {
+        setGoodOrigin(false);
+      }
+
+      if (val.length > 11) {
+        setGoodDestination(true);
+      } else {
+        setGoodDestination(false);
+      }
+
+      if (goodName && goodEmail && goodOrigin && goodDestination) {
+        setReadyToSubmit(true)
+      } else {
+        setReadyToSubmit(false)
+      }
+
     };
 
     
@@ -131,8 +167,10 @@ export default function ChatClient() {
                         <div className="w-full h-full flex flex-col place-items-center place-content-center">
                             
                             {/* chat and add container */}
-                            <div className="w-full relative h-full flex flex-col place-items-center place-content-center">
+                            <div className="w-full relative h-full flex gap-2 flex-col place-items-center place-content-center justify-between">
                                 
+                                <div></div>
+
                                 {/* ad block */}
                                 {/* I could even make this a moving component at one point so I can show different ads */}
                                 <motion.div
@@ -140,25 +178,35 @@ export default function ChatClient() {
                                 animate={{ opacity: 1 }}
                                 transition={{ duration: 8 }}
                                 className="w-full h-[100px] rounded-xl flex place-items-center place-content-center bg-gray-500 bg-opacity-20 absolute top-0">
-                                    <img src={ads[0].image} alt={ads[0].alt} className="w-full h-full object-cover" />
+                                    {/* <img src={ads[0].image} alt={ads[0].alt} className="w-full h-full object-cover" /> */}
+                                    {/* <img src='' alt='' className="w-full h-full object-cover" /> */}
                                     <a className="absolute text-xs top-2 right-2 cursor-pointer bg-neutral-800 rounded-full p-1 hover:bg-neutral-700 hover:scale-105"><X size={20} /></a>
                                     <a href="bid" className="absolute select-none text-[12px] text-muted-foreground bottom-[-20%] hover:text-white right-2 cursor-pointer">Want your ad here?</a>
                                 </motion.div>
 
 
+                                {/* welcome and checklist */}
                                 <motion.div 
-                                className="w-full place-content-center flex select-none h-max absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
+                                // className="w-full place-content-center flex select-none h-max absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
+                                className="w-full pt-[10vh] flex text-center gap-2  flex-col place-self-center place-content-center flex select-none h-max">
                                     <p>Welcome to Airlink!</p>
+                                    <p className="text-[12px] text-muted-foreground">To get an instant flight booking link, please make sure these details are included in your flight details:</p>
+                                    <div className="w-full place-content-center h-max gap-2 flex text-muted-foreground text-[12px]">
+                                        <p className={`text-[12px] ${goodName ? 'text-green-500' : ''}`}>Name</p>,
+                                        <p className={`text-[12px] ${goodEmail ? 'text-green-500' : ''}`}>Email</p>,
+                                        <p className={`text-[12px] ${goodOrigin ? 'text-green-500' : ''}`}>Your Origin</p>,
+                                        <p className={`text-[12px] ${goodDestination ? 'text-green-500' : ''}`}>Your Destination</p>,
+                                    </div>
+                                    {readyToSubmit && (
+                                        <>
+                                         <p className="text-[12px] md:py-8 place-content-center place-items-center w-full flex gap-2" >Press the <SendHorizonal className="w-[20px] p-1 outline outline-[1px] outline-white rounded-full h-[20px] -rotate-90"/> button to get your flight link instantly!</p>
+                                        </>
+                                    )}
                                 </motion.div>
 
                                 
-                                {/* the actual chat */}
-                                <motion.div 
-                                // initial={{ opacity: 0 }}
-                                // animate={{ opacity: 1 }}
-                                // transition={{ duration: 2 }}
-                                className=" rounded-xl flex place-items-end p-5 place-content-center outline-neutral-800 w-full h-full ">
-                                    
+                                {/* the the responses */}
+                                <div className=" rounded-xl flex place-items-end p-5 place-content-center outline-neutral-800 w-full h-m ">                                    
                                     {/* chat bubble */}
                                     <motion.div 
                                     initial={{ opacity: 0, y: 100 }}
@@ -170,7 +218,7 @@ export default function ChatClient() {
                                         </div>                                    
                                     </motion.div>  
 
-                                </motion.div>
+                                </div>
                                 
                             </div>
 
@@ -191,7 +239,8 @@ export default function ChatClient() {
                                     className="w-full text-[12px] no-scrollbar p-2 px-6 rounded-xl bg-neutral-900 outline outline-neutral-800"/>                                    
                                     {/* you have to make buttons a component to track the status of the form */}
                                     {/* <button className="-rotate-90 p-2 hover:scale-105 text-muted-foreground bg-neutral-800 hover:bg-neutral-700 hover:text-white rounded-full"><SendHorizonal size={20}/></button> */}
-                                    <span onClick={() => callGemini('')} className="-rotate-90 p-2 hover:scale-105 text-muted-foreground bg-neutral-800 hover:bg-neutral-700 hover:text-white rounded-full"><SendHorizonal size={20}/></span>
+                                    {/* <span onClick={() => callGemini('')} className="-rotate-90 p-2 hover:scale-105 text-muted-foreground bg-neutral-800 hover:bg-neutral-700 hover:text-white rounded-full"><SendHorizonal size={20}/></span> */}
+                                    <span onClick={() => offerRequest()} className="-rotate-90 p-2 hover:scale-105 text-muted-foreground bg-neutral-800 hover:bg-neutral-700 hover:text-white rounded-full"><SendHorizonal size={20}/></span>
                                     {/* <SubmitButton/> */}
                                 
                                 </motion.form>
